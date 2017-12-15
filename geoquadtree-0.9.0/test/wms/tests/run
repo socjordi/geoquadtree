@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+
+for ($i=0; ($i<25); $i++)
+{
+  $xmin=rand(338)-179;  # Between -179 i 159
+  $ymin=rand(158)-89;  # Between -89 i 69
+
+  $d=rand(20);
+  $xmax=$xmin+$d;
+  $ymax=$ymin+$d;
+
+  $file=sprintf("%03i_local.png", $i);
+  $cmd="time wget -q \"http://localhost/wms/wms.fcgi?REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=bmng2km&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=EPSG:4326&BBOX=$xmin,$ymin,$xmax,$ymax&WIDTH=500&HEIGHT=500\" -O $file";
+  print "$cmd\n";
+
+  $file=sprintf("%03i_nasa.png", $i);
+  $cmd="time wget \"http://wms.jpl.nasa.gov/wms.cgi?REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=BMNG&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=EPSG:4326&BBOX=$xmin,$ymin,$xmax,$ymax&WIDTH=500&HEIGHT=500\" -U \"Mozilla/5.0\" -O $file";
+  print "$cmd\n";
+}

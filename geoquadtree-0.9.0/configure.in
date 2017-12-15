@@ -1,0 +1,42 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.59)
+
+AC_INIT(geoquadtree, 1.0.0, geoquadtree@gmail.com)
+AM_INIT_AUTOMAKE
+
+define([AC_CACHE_LOAD], )
+define([AC_CACHE_SAVE], )
+
+AC_CONFIG_SRCDIR([geoquadtree.c])
+AC_CONFIG_HEADER([config.h])
+
+AC_CONFIG_AUX_DIR([gnubuild])
+AC_PROG_LIBTOOL
+
+# Checks for programs.
+# AC_PROG_CXX
+AC_PROG_CC
+
+# Checks for libraries.
+AC_CHECK_LIB([gdal],[GDALOpen],,AC_MSG_ERROR(geoquadtree requires libgdal))
+AC_CHECK_LIB([geotiff],[XTIFFOpen],,AC_MSG_ERROR(geoquadtree requires libgeotiff))
+AC_CHECK_LIB([jpeg],[jpeg_stdio_src],,AC_MSG_ERROR(geoquadtree requires libjpeg))
+AC_CHECK_LIB([png],[png_create_read_struct],,AC_MSG_ERROR(geoquadtree requires libpng))
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
+AC_CHECK_HEADER([fastcgi.h],,AC_MSG_ERROR(geoquadtree requires libfcgi))
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+# Checks for library functions.
+AC_FUNC_MALLOC
+AC_FUNC_STAT
+AC_CHECK_FUNCS([mkdir strcasecmp strncasecmp])
+
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

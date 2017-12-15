@@ -1,0 +1,245 @@
+GeoQuadTree README (version 0.9.0)
+--------------------------------------
+
+    Copyright (c) 2006 Jordi Gilabert Vall
+
+    Read the file "COPYING" for information on usage and redistribution,
+    and for a DISCLAIMER OF ALL WARRANTIES.
+
+    GeoQuadtree is released under the GNU General Public License.
+
+DESCRIPTION
+-----------
+
+GeoQuadTree is an open format for storing georeferenced images on a filesystem.
+It is based on image tiles, compressed in PNG format (at the moment), and
+organised in a hierarchical structure of folders.
+
+This project also includes software to server the images.
+
+What are the benefits of GeoQuadTree ?
+
+    * Scalability. It allows any extent, any resolution, only limited by
+                   storage capacity. Multiple sub-images can be stored inside
+                   the same GeoQuadTree (for instance, we could store different
+                   versions of maps in the same GeoQuadTree).
+
+    * Simplicity. It's very easy to import any georreferenced image into the
+                  GeoQuadtree format, using the gqt command-line utility.
+                  Any image format supported by GDAL can be imported.
+
+                  This utility can also be used to export a part of a
+                  GeoQuadTree into any format supported by GDAL.
+
+    * High quality. The images are stored in PNG format, i.e. lossless
+                    compression. The PNG format allows an alpha channel,
+                    this can be used to represent non-data pixels.
+
+    * Efficiency. The compression used in PNG format requires low CPU usage.
+                  Other image formats can achieve higher compression factors,
+                  but at the expense of lossy compression, and higher CPU usage.
+                  Higher CPU usages implies higher response times, and lower
+                  performance on the same hardware.
+
+    * Multiple access. This format can be accessed in different ways: by means
+                       of command line utilities, the GeoQuadTree Viewer, the
+                       GeoQuadTree WMS Server, or any software that can read
+                       GDAL sources.
+
+    * Freedom. The GPL license gives the user freedom to use, copy, study,
+               modify and redistribute without restriction.
+
+    * OGC WMS. An OGC WMS service is available, featuring changes of Spatial
+               Reference System (SRS) using the PROJ.4 library.
+
+    * GDAL driver. A GDAL driver is available, so any software that can read
+                   from (or write to) GDAL sources can use images in this format.
+
+You can access to more information on the web site of the project:
+
+	http://geoquadtree.org/
+
+
+INSTALLATION
+------------
+
+    Requirements:
+
+      * libgdal
+        http://www.gdal.org/
+
+      * libxml2
+        http://xmlsoft.org/
+
+      * libpng
+        http://www.libpng.org/pub/png/libpng.html
+
+      * libjpeg
+        http://www.ijg.org/files/
+
+      * PROJ.4
+        http://www.remotesensing.org/proj/
+
+      * ImageMagick
+        http://www.imagemagick.org/
+
+      * FastCGI
+        http://www.fastcgi.com/dist/
+
+    Installing the gqt command line utility
+
+        The gqt command line utility can be used to create GeoQuadTrees, import
+        images in other formats, an exporting areas of a GeoQuadTree to other
+        image formats.
+
+        To compile gqt, you only have to 'make':
+
+          make
+
+        If you have all the required libs installed, gcc will compile the source
+        files, and you'll get the gqt executable, as well as wms.fcgi.
+
+        Now you can execute gqt.
+
+    Installing the GeoQuadtree WMS server
+
+        The executable of the WMS server is wms.fcgi, it was compiled at the
+        same time as the gqt command line utility.
+
+        To install it, you have to install the module mod_fastcgi on your Apache
+        server, and configure it.
+
+        To install mod_fastcgi on Apache2, download from the the FastCGI web,
+        and try this (you need to have installed the development headers,
+        apache2-refork-dev or apache2-threaded-dev):
+
+		wget http://www.fastcgi.com/dist/mod_fastcgi-2.4.2.tar.gz
+		tar xzf mod_fastcgi-2.4.2.tar.gz
+		cd mod_fastcgi-2.4.2
+		cp Makefile.AP2 Makefile
+		make
+		sudo make install
+
+	Note: On Ubuntu 6.10, you have to edit the 7h line on Makefile so the
+              variable top_dir contains /usr/share/apache2, and not
+              /usr/local/apache2:
+
+		top_dir      = /usr/share/apache2
+
+	To load the module from Apache2, create a file named
+        /etc/apache2/mods-available/fastcgi.load with the following contents:
+
+		LoadModule fastcgi_module /usr/lib/apache2/modules/mod_fastcgi.so
+
+	Now you can link this file to mods-enabled:
+
+		cd /etc/apache2/mods-enabled
+		sudo ln -s /etc/apache2/mods-available/fastcgi.load .
+
+	Add these lines to the file /etc/apache2/sites-enabled/000-default:
+
+		<IfModule mod_fastcgi.c>
+
+		   # Maps .fcgi extension to the handler fastcgi-script
+     		   AddHandler fastcgi-script .fcgi
+
+    		   # Defines wms.fcgi as a static FastCGI application (3 instances)
+        	   FastCgiServer "/home/jordi/geoquadtree/svn/wms/wms.fcgi" -processes 3
+
+        	   <Location "/home/jordi/geoquadtree/svn/wms">
+                	AllowOverride None
+               		Options +ExecCGI -Includes
+                	SetHandler fastcgi-script
+                	Order allow,deny
+                	Allow from all
+        	   </Location>
+
+        	   # Maps URLs beginning with /wms to the FastCGI program
+        	   ScriptAlias /wms /home/jordi/geoquadtree/svn/wms/wms.fcgi
+
+		</IfModule>
+
+        Note: Replace /home/jordi/geoquadtree/svn with the path where you have downloaded the source code
+
+        Create the folder /etc/geoquadtree and copy into it the configuration file geoquadtreeserver.xml,
+        geoquadtreeserver.dtd and logo image file:
+
+                sudo mkdir /etc/geoquadtree
+		sudo cp /home/jordi/geoquadtree/svn/geoquadtreeserver.xml /etc/geoquadtree/.
+		sudo cp /home/jordi/geoquadtree/svn/geoquadtreeserver.dtd /etc/geoquadtree/.
+		sudo cp /home/jordi/geoquadtree/svn/viewer/logo_112x20.png /etc/geoquadtree/.
+
+	Now restart Apache2:
+
+		sudo /etc/init.d/apache2 restart
+
+    Compiling the GDAL plugin
+
+        Download the GDAL source code, and copy the GeoQuadTree driver folder:
+
+		wget http://www.gdal.org/dl/gdal-1.3.2.tar.gz
+		tar xzf gdal-1.3.2.tar.gz
+		cp -r /home/jordi/geoquadtree/gdal/frmts/gqt frmts/.
+
+	Add the registration entry point declaration to gdal/gcore/gdal_frmts.h:
+
+		void CPL_DLL GDALRegister_GQT(void);
+
+	Add the registration entry point to frmts/gdalallregister.c:
+
+		#ifdef FRMT_gqt
+    			GDALRegister_GQT();
+		#endif
+
+	Add gqt to the GDAL_FORMATS macro in GDALmake.opt.in and GDALmake.opt:
+
+		GDAL_FORMATS = 	gxf gtiff hfa aigrid aaigrid ceos ceos2 iso8211 xpm \
+			sdts raw dted mem jdem envisat elas fit vrt usgsdem l1b \
+			nitf bmp pcidsk airsar rs2 ilwis rmf rik leveller sgi \
+			idrisi gqt \
+			@OPT_GDAL_FORMATS@
+
+	Add gqt to the EXTRAFLAGS macro in frmts/makefile.vc:
+
+		EXTRAFLAGS =	-DFRMT_ceos -DFRMT_aigrid -DFRMT_elas -DFRMT_hfa -DFRMT_gtiff\
+			-DFRMT_sdts -DFRMT_raw -DFRMT_gxf -DFRMT_ceos2 -DFRMT_png \
+			-DFRMT_dted -DFRMT_mem -DFRMT_jdem -DFRMT_gif \
+			-DFRMT_envisat -DFRMT_aaigrid -DFRMT_usgsdem -DFRMT_l1b \
+			-DFRMT_fit -DFRMT_vrt -DFRMT_xpm -DFRMT_bmp -DFRMT_rmf \
+			-DFRMT_nitf -DFRMT_pcidsk -DFRMT_airsar -DFRMT_rs2 \
+			-DFRMT_ilwis -DFRMT_msgn -DFRMT_rik -DFRMT_pcraster \
+			-DFRMT_leveller -DFRMT_sgi -DFRMT_idrisi -DFRMT_gqt
+
+	Now we can compile:
+
+		./configure
+		make
+		sudo make install
+
+DOCUMENTATION
+-------------
+
+  Read the documentation in the doc/ directory.
+  You also can visit the web of the project:
+
+     http://www.geoquadtree.org/
+
+
+BUGS
+----
+
+  GeoQuadTree is in development.
+  Please submit bug reports through the SourceForge bug tracking facilities:
+
+    http://sourceforge.net/tracker/?group_id=168299&atid=846272
+
+
+FEATURE REQUESTS
+----------------
+
+  You can submit feature requests through the SourceForge facilities:
+
+    http://sourceforge.net/tracker/?atid=846273&group_id=168299&func=browse
+
+
+--- End of README --------------------------------------------------------------

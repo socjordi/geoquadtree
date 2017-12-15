@@ -1,0 +1,35 @@
+#### No version specified => server sends 1.3.0
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities" -O 01_noversion.xml
+
+#### Version 1.0.0 => server sends 1.1.1
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.0.0" -O 02_version_1_0_0.xml
+
+### Version 1.0.7 => server sends 1.1.1
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.0.7" -O 03_version_1_0_7.xml
+
+### Version 1.1.0 => server sends 1.1.1
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.1.0" -O 04_version_1_1_0.xml
+
+### Version 1.1.1 => server sends 1.1.1
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.1.1" -O 05_version_1_1_1.xml
+
+### Version 1.3.0 => server sends 1.3.0
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0" -O 06_version_1_3_0.xml
+
+### Version 1.4.0 => server sends 1.3.0
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0" -O 07_version_1_4_0.xml
+
+### Version with wrong format (x.y)
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.0" -O 08_version_1_0.xml
+
+### Version with wrong format (x.y.z.w)
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.1.2" -O 09_version_1_3_1_2.xml
+
+### UpdateSequence equal to modification time of configuration file of WMS server
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&UPDATESEQUENCE=2006-06-24T141436Z" -O 10_updatesequence_equal.xml
+
+### UpdateSequence < modification time of configuration file of WMS server
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&UPDATESEQUENCE=2006-06-23T141436Z" -O 11_updatesequence_less.xml
+
+### UpdateSequence > modification time of configuration file of WMS server
+wget "http://localhost/wms/wms.fcgi?SERVICE=WMS&REQUEST=GetCapabilities&UPDATESEQUENCE=2006-06-25T141436Z" -O 12_updatesequence_more.xml

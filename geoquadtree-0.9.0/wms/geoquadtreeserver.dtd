@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT GeoQuadTreeServer (Service, Layer*)>
+
+<!-- The Name is typically for machine-to-machine communication. -->
+<!ELEMENT Name (#PCDATA) >
+
+<!-- The Title is for informative display to a human. -->
+<!ELEMENT Title (#PCDATA) >
+
+<!-- The abstract is a longer narrative description of an object. -->
+<!ELEMENT Abstract (#PCDATA) > 
+
+<!ELEMENT Service (Title, Abstract?, KeywordList?,
+                   ContactInformation?, Fees?, AccessConstraints?,
+                   MaxWidth?, MaxHeight?, Logo?) >
+
+<!-- List of keywords or keyword phrases to help catalog searching. -->
+<!ELEMENT KeywordList (Keyword*) >
+
+<!-- A single keyword or phrase. -->
+<!ELEMENT Keyword (#PCDATA) >
+
+<!-- Information about a contact person for the service. -->
+<!ELEMENT ContactInformation  (ContactPersonPrimary?, ContactPosition?,
+                               ContactAddress?, ContactVoiceTelephone?,
+                               ContactFacsimileTelephone?,
+                               ContactElectronicMailAddress?) >
+
+<!--The primary contact person.-->
+<!ELEMENT ContactPersonPrimary  (ContactPerson, ContactOrganization) >
+
+<!--The person to contact.-->
+<!ELEMENT ContactPerson  (#PCDATA) >
+
+<!--The organization supplying the service.-->
+<!ELEMENT ContactOrganization  (#PCDATA) >
+
+<!--The position title for the contact person.-->
+<!ELEMENT ContactPosition  (#PCDATA) >
+
+<!--The address for the contact supplying the service.-->
+<!ELEMENT ContactAddress  (AddressType,Address,City,StateOrProvince,PostCode,
+               Country) >
+
+<!--The type of address.-->
+<!ELEMENT AddressType  (#PCDATA) >
+
+<!--The street address.-->
+<!ELEMENT Address  (#PCDATA) >
+
+<!--The address city.-->
+<!ELEMENT City  (#PCDATA) >
+
+<!--The state or province.-->
+<!ELEMENT StateOrProvince  (#PCDATA) >
+
+<!--The zip or postal code.-->
+<!ELEMENT PostCode  (#PCDATA) >
+
+<!--The address country.-->
+<!ELEMENT Country  (#PCDATA) >
+
+<!--Contact telephone number.-->
+<!ELEMENT ContactVoiceTelephone  (#PCDATA) >
+
+<!--The contact fax number.-->
+<!ELEMENT ContactFacsimileTelephone  (#PCDATA) >
+
+<!--The e-mail address for the contact.-->
+<!ELEMENT ContactElectronicMailAddress  (#PCDATA) >
+
+<!-- Elements indicating what fees or access constraints are imposed. -->
+<!ELEMENT Fees (#PCDATA)>
+<!ELEMENT AccessConstraints (#PCDATA)>
+
+<!ELEMENT MaxWidth (#PCDATA)>
+<!ELEMENT MaxHeight (#PCDATA)>
+<!ELEMENT Logo (#PCDATA)>
+
+<!ELEMENT Description (#PCDATA) >
+
+<!ELEMENT Type (#PCDATA) >
+<!ELEMENT Definition (#PCDATA) >
+
+<!ELEMENT SRS EMPTY>
+<!ATTLIST SRS 
+          Name CDATA #REQUIRED
+          Path CDATA #REQUIRED>
+
+<!ELEMENT Layer (SRS*, GeoQuadTree*)>
+<!ATTLIST Layer 
+          Name CDATA #REQUIRED
+          Title CDATA #REQUIRED>
+
+<!ELEMENT GeoQuadTree EMPTY>
+<!ATTLIST GeoQuadTree
+          Path CDATA #REQUIRED
+          WebPath CDATA #REQUIRED
+          MinResX CDATA #REQUIRED
+          MinResY CDATA #REQUIRED
+          MaxResX CDATA #REQUIRED
+          MaxResY CDATA #REQUIRED>

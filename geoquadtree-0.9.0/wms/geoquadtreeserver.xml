@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE GeoQuadTreeServer SYSTEM "geoquadtreeserver.dtd">
+
+<GeoQuadTreeServer>
+
+  <Service>
+    <Title>GeoQuadTree WMS Server</Title>
+    <Abstract>This is an OGC-compliant Map Service served by geoquadtree.org</Abstract>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Jordi</ContactPerson>
+        <ContactOrganization>geoquadtree.org</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactElectronicMailAddress>geoquadtree@gmail.com</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>Free</Fees>
+    <AccessConstraints>None, unless abused</AccessConstraints>
+    <MaxWidth>2000</MaxWidth>
+    <MaxHeight>2000</MaxHeight>
+    <Logo>/etc/geoquadtree/logo.png</Logo>
+  </Service>
+
+  <Layer Name="bmng" Title="Blue Marble Next Generation">
+    <SRS Name="EPSG:4326" Path="/etc/geoquadtree/epsg4326.prj" />
+    <GeoQuadTree Path="/home/jordi/geoquadtree/tutorials/bmng_2km_60px_per_dg/bmng.gqt" WebPath="/geoquadtrees/bmng" MinResX="0" MinResY="0" MaxResX="1.0" MaxResY="1.0" />
+  </Layer>
+
+  <Layer Name="bt5m" Title="Base topogràfica de Catalunya 1:5 000">
+    <SRS Name="EPSG:23031" Path="/etc/geoquadtree/epsg23031_icc.prj" />
+    <SRS Name="EPSG:4326" Path="/etc/geoquadtree/epsg4326.prj" />
+    <GeoQuadTree Path="/home/jordi/geoquadtree/tutorials/bt5m/bt5m.gqt" WebPath="/geoquadtrees/bt5m" MinResX="0" MinResY="0" MaxResX="1.0" MaxResY="1.0" />
+  </Layer>
+
+</GeoQuadTreeServer>

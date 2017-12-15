@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+
+$num=0;
+
+while (1)
+{
+  $xmin=rand(338)-179;  # Entre -179 i 159
+  $ymin=rand(158)-89;  # Entre -89 i 69
+
+  $d=rand(20);
+  $xmax=$xmin+$d;
+  $ymax=$ymin+$d;
+
+  $file=sprintf("%03i_local.png", $i);
+  $cmd="time wget -q \"http://localhost/wms/wms.fcgi?REQUEST=GetMap&SERVICE=WMS&VERSION=1.1.1&LAYERS=bmng2km&STYLES=&FORMAT=image/png&BGCOLOR=0xFFFFFF&TRANSPARENT=TRUE&SRS=EPSG:4326&BBOX=$xmin,$ymin,$xmax,$ymax&WIDTH=500&HEIGHT=500\" -O /dev/null";
+  #print "$cmd\n";
+  system($cmd);
+  print "num=$num\n";
+  $num++;
+}

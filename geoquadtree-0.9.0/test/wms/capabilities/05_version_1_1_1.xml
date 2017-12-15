@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://schemas.opengis.net/wms/1.1.1/capabilities_1_1_1.dtd">
+<WMT_MS_Capabilities version="1.1.1" updateSequence="2006-06-24T181022Z">
+  <Service>
+    <Name>WMS</Name>
+    <Title>GeoQuadTree WMS Server</Title>
+    <Abstract>This is an OGC-compliant Map Service served by geoquadtree.org</Abstract>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost/wms/wms.fcgi" xlink:type="simple"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Jordi</ContactPerson>
+        <ContactOrganization>geoquadtree.org</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition/>
+      <ContactAddress>
+        <AddressType/>
+        <Address/>
+        <City/>
+        <StateOrProvince/>
+        <PostCode/>
+        <Country/>
+      </ContactAddress>
+      <ContactVoiceTelephone/>
+      <ContactFacsimileTelephone/>
+      <ContactElectronicMailAddress>geoquadtree@gmail.com</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>Free</Fees>
+    <AccessConstraints>None, unless abused</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost/wms/wms.fcgi" xlink:type="simple"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/jpeg</Format>
+        <Format>image/png</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://localhost/wms/wms.fcgi" xlink:type="simple"/>
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+    </Exception>
+    <Layer>
+      <Title>GeoQuadTree WMS Server</Title>
+      <Layer opaque="0" queryable="0" noSubsets="0">
+        <Name>bt5mv20</Name>
+        <Title>Base topogr&#xE0;fica de Catalunya 1:5 000</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:23031</SRS>
+        <SRS>EPSG:99</SRS>
+        <LatLonBoundingBox minx="2.022064" miny="41.416638" maxx="2.063736" maxy="41.438179"/>
+        <BoundingBox SRS="EPSG:4326" minx="2.022064" miny="41.416638" maxx="2.063736" maxy="41.438179"/>
+        <BoundingBox SRS="EPSG:23031" minx="418271.000034" miny="4585642.003005" maxx="421779.500032" maxy="4587995.003005"/>
+        <BoundingBox SRS="EPSG:99" minx="418368.222640" miny="4585675.421556" maxx="421876.587975" maxy="4588028.372364"/>
+      </Layer>
+      <Layer opaque="0" queryable="0" noSubsets="0">
+        <Name>bmng</Name>
+        <Title>Blue Marble Next Generation</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox minx="-180.000000" miny="-90.000000" maxx="90.000000" maxy="90.000000"/>
+        <BoundingBox SRS="EPSG:4326" minx="-180.000000" miny="-90.000000" maxx="90.000000" maxy="90.000000"/>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMT_MS_Capabilities>
