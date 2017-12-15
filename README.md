@@ -1,4 +1,4 @@
-Project developed in 2006-10-29
+Project developed in 2006-10-29 (not maintained since then)
 
 # geoquadtree
 GeoQuadTree is an open format for storing georeferenced images.
